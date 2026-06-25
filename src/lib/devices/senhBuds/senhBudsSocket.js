@@ -470,12 +470,12 @@ export const SenhBudsSocket = GObject.registerClass({
 
         this._log.info('Parse Battery Status');
         const getBatteryState = byte => {
-            if (byte === 0)
+        /*    if (byte === 0)
                 return 'disconnected';
 
             if (byte === 1 || byte === 2)
                 return 'charging';
-
+        */
             return 'discharging';
         };
 
