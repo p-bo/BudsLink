@@ -17,6 +17,7 @@ import {
 
 export const DeviceTypeGalaxyBuds = 'galaxyBuds';
 export const DeviceTypeGalaxyLegacy = 'galaxybudslegacy';
+const DeviceProfileTypeSerial = 'serialPortProfile';
 
 export function isGalaxyLegacy(bluezDeviceProxy, uuids) {
     const bluezProps = [];
@@ -153,8 +154,9 @@ export const GalaxyBudsDevice = GObject.registerClass({
         this._updateGsettings();
 
         const type = this._modelId === GalaxyBudsModel.GalaxyBuds
-            ? DeviceTypeGalaxyLegacy : DeviceTypeGalaxyBuds;
-        const uuid =  type === DeviceTypeGalaxyLegacy ? BudsLegacyUUID : BudsUUID;
+            ? DeviceTypeGalaxyLegacy : DeviceProfileTypeSerial;
+
+        const uuid = type === DeviceTypeGalaxyLegacy ? BudsLegacyUUID : BudsUUID;
 
         const profile = {type, uuid};
 
