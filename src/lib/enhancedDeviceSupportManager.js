@@ -27,6 +27,9 @@ import {
 import {
     SenhBudsDevice, isSenhBuds, DeviceTypeSenhBuds
 } from './devices/senhBuds/senhBudsDevice.js';
+import {
+    BoseBudsDevice, isBoseBuds, DeviceTypeBoseBuds
+} from './devices/boseBuds/boseBudsDevice.js';
 import {GfpsDevice, isGfps, DeviceTypeGfps} from './devices/gfps/gfpsDevice.js';
 
 export const EnhancedDeviceSupportManager = GObject.registerClass({
@@ -138,6 +141,11 @@ export const EnhancedDeviceSupportManager = GObject.registerClass({
                     enabled: this._toggle.senhBudsEnabled,
                     check: isSenhBuds,
                     type: DeviceTypeSenhBuds,
+                },
+                {
+                    enabled: this._toggle.boseBudsEnabled,
+                    check: isBoseBuds,
+                    type: DeviceTypeBoseBuds,
                 },
                 {
                     enabled: this._toggle.gfpsEnabled,
