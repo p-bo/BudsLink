@@ -7,21 +7,15 @@ import {createLogger, getDeviceIdentifier, hexBytes} from '../logger.js';
 import {
     buds2to1BatteryLevel, validateProperties, launchConfigureWindow, isArrayEqual
 } from '../deviceUtils.js';
-import {getBluezDeviceProxy} from '../../bluezDeviceProxy.js';
 import {createConfig, createProperties, DataHandler} from '../../dataHandler.js';
 import {RedmiBudsSocket} from './redmiBudsSocket.js';
 
 export const DeviceTypeRedmiBuds = 'redmiBuds';
 
 const RedmiBudsUUID = '0000fd2d-0000-1000-8000-00805f9b34fb';
-const SerialPortUUID = '00001101-0000-1000-8000-00805f9b34fb';
-const RedmiVendorUUID = '8a482a08-5507-42ac-b673-a88df48b3fc7';
-const DeviceProfileTypeSerial = 'serialPortProfile';
-
 export function isRedmiBuds(bluezDeviceProxy, uuids) {
     const bluezProps = [];
-    const supported = uuids.includes(RedmiBudsUUID) ||  uuids.includes(RedmiVendorUUID)
-        ? 'yes' : 'no';
+    const supported = uuids.includes(RedmiBudsUUID) ? 'yes' : 'no';
     return {supported, bluezProps};
 }
 
@@ -71,16 +65,7 @@ export const RedmiBudsDevice = GObject.registerClass({
             updateCustomEq: this.updateCustomEq.bind(this),
         };
 
-        const bluezDeviceProxy = getBluezDeviceProxy(devicePath);
-        const uuids = bluezDeviceProxy.UUIDs ?? [];
-        let uuid = RedmiBudsUUID;
-        let type = DeviceTypeRedmiBuds;
-        if (!uuids.includes(RedmiBudsUUID)) {
-            type = DeviceProfileTypeSerial;
-            uuid = SerialPortUUID;
-        }
-
-        const profile = {type, uuid};
+        const profile = {type: DeviceTypeRedmiBuds, uuid: RedmiBudsUUID};
 
         this._redmiBudsSocket = new RedmiBudsSocket(
             this._devicePath,
