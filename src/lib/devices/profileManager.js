@@ -81,7 +81,6 @@ export const ProfileManager = GObject.registerClass({
 
         const opts = {
             Name: new GLib.Variant('s', `CustomProfile-${deviceType}`),
-            Role: new GLib.Variant('s', 'client'),
             AutoConnect: new GLib.Variant('b', true),
         };
 
@@ -220,8 +219,9 @@ export const ProfileManager = GObject.registerClass({
             this._log.info(
                 `ConnectProfile OK for ${profile.uuid} on ${sanitizeDevPath(devicePath)}`
             );
-        } catch {
-            // do nothing
+        } catch (e) {
+            this._log.error(e,
+                `ConnectProfile failed for ${profile.uuid} on ${sanitizeDevPath(devicePath)}`);
         }
     }
 
