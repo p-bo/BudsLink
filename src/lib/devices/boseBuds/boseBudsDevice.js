@@ -120,7 +120,7 @@ export const BoseBudsDevice = GObject.registerClass({
             this._setupAnrToggle();
 
 
-        const profile = {type: DeviceTypeBoseBuds, uuid: BoseBudsUUID};
+        const profile = {type: DeviceTypeBoseBuds, uuid: '00001101-0000-1000-8000-00805f9b34fb'};
 
         this._boseBudsSocket = new BoseBudsSocket(
             this._devicePath,
@@ -263,64 +263,64 @@ export const BoseBudsDevice = GObject.registerClass({
             }
         }
 
-if (this._modelData.audioModes) {
-    const modes = this._settingsItems['modes'];
-    let enabledModes = 0;
-    let favoritesChanged = false;
-    let uiModesChanged = false;
-    const favorites = [];
+        if (this._modelData.audioModes) {
+            const modes = this._settingsItems['modes'];
+            let enabledModes = 0;
+            let favoritesChanged = false;
+            let uiModesChanged = false;
+            const favorites = [];
 
-    const isModeEqual = (a, b) => Object.keys(a).every(key => {
-        if (key === 'ui' || key === 'fav')
-            return true;
+            const isModeEqual = (a, b) => Object.keys(a).every(key => {
+                if (key === 'ui' || key === 'fav')
+                    return true;
 
-        return a[key] === b[key];
-    });
+                return a[key] === b[key];
+            });
 
-    const isFavoriteEqual = (a, b) => a.added === b.added && a.fav === b.fav;
-    const isUiEqual = (a, b) => a.added === b.added && a.ui === b.ui;
+            const isFavoriteEqual = (a, b) => a.added === b.added && a.fav === b.fav;
+            const isUiEqual = (a, b) => a.added === b.added && a.ui === b.ui;
 
-    for (const mode of modes) {
-        const current = this._audioModes.find(m => m.index === mode.index);
+            for (const mode of modes) {
+                const current = this._audioModes.find(m => m.index === mode.index);
 
-        if (!current || !isModeEqual(current, mode))
-            this._setAudioMode(mode);
+                if (!current || !isModeEqual(current, mode))
+                    this._setAudioMode(mode);
 
-        if (current && !isFavoriteEqual(current, mode))
-            favoritesChanged = true;
+                if (current && !isFavoriteEqual(current, mode))
+                    favoritesChanged = true;
 
-        if (current && !isUiEqual(current, mode))
-            uiModesChanged = true;
+                if (current && !isUiEqual(current, mode))
+                    uiModesChanged = true;
 
-        if (mode.added) {
-            enabledModes++;
+                if (mode.added) {
+                    enabledModes++;
 
-            if (mode.fav)
-                favorites.push(mode.index);
+                    if (mode.fav)
+                        favorites.push(mode.index);
+                }
+            }
+
+            if (favoritesChanged)
+                this._setAudioModeFavorites(enabledModes, favorites);
+
+            this._audioModes = modes.map(mode => ({...mode}));
+
+            if (uiModesChanged)
+                this._setupAudioModeToggle();
+
+            const currentAudioMode = this._settingsItems['current-mode'];
+            if (this._currentAudioMode !== currentAudioMode) {
+                this._currentAudioMode = currentAudioMode;
+                this._setCurrentAudioMode(currentAudioMode);
+                this.updateAudioModeCurrent(currentAudioMode, true);
+            }
+
+            const restoreAudioMode = this._settingsItems['restore-mode'];
+            if (this._restoreAudioMode !== restoreAudioMode) {
+                this._restoreAudioMode = restoreAudioMode;
+                this._setRestoreAudioMode(restoreAudioMode);
+            }
         }
-    }
-
-    if (favoritesChanged)
-        this._setAudioModeFavorites(enabledModes, favorites);
-
-    this._audioModes = modes.map(mode => ({...mode}));
-
-    if (uiModesChanged)
-        this._setupAudioModeToggle();
-
-    const currentAudioMode = this._settingsItems['current-mode'];
-    if (this._currentAudioMode !== currentAudioMode) {
-        this._currentAudioMode = currentAudioMode;
-        this._setCurrentAudioMode(currentAudioMode);
-        this.updateAudioModeCurrent(currentAudioMode, true);
-    }
-
-    const restoreAudioMode = this._settingsItems['restore-mode'];
-    if (this._restoreAudioMode !== restoreAudioMode) {
-        this._restoreAudioMode = restoreAudioMode;
-        this._setRestoreAudioMode(restoreAudioMode);
-    }
-}
 
         if (this._modelData.eq?.bands !== undefined) {
             const eqCustom = this._settingsItems['eq-custom'];
