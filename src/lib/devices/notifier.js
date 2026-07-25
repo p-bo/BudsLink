@@ -38,7 +38,7 @@ export class Notifier {
         else if (type === DeviceTypeSenhBuds)
             label = _('Sennheiser');
         else if (type === DeviceTypeBoseBuds)
-            label = _('Sennheiser');
+            label = _('Bose');
         else if (type === DeviceTypeGfps)
             label = _('Google Fast Pair');
         else

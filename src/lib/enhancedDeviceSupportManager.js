@@ -274,6 +274,11 @@ export const EnhancedDeviceSupportManager = GObject.registerClass({
                         new SenhBudsDevice(this._settings, path, deviceProps.alias,
                             this._extPath, this._profileManager,
                             this.updateDeviceMapCb.bind(this));
+                } else if (deviceProps.type === DeviceTypeBoseBuds) {
+                    deviceProps.enhancedDevice =
+                        new BoseBudsDevice(this._settings, path, deviceProps.alias,
+                            this._extPath, this._profileManager,
+                            this.updateDeviceMapCb.bind(this));
                 } else if (deviceProps.type === DeviceTypeGfps) {
                     deviceProps.enhancedDevice =
                         new GfpsDevice(this._settings, path, deviceProps.alias,
